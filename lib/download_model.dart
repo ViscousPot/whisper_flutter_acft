@@ -43,10 +43,7 @@ enum WhisperModel {
 }
 
 /// Download [model] to [destinationPath]
-Future<String> downloadModel(
-    {required WhisperModel model,
-    required String destinationPath,
-    String? downloadHost}) async {
+Future<String> downloadModel({required WhisperModel model, required String destinationPath, String? downloadHost}) async {
   if (kDebugMode) {
     debugPrint("Download model ${model.modelName}");
   }
@@ -56,9 +53,9 @@ Future<String> downloadModel(
 
   if (downloadHost == null || downloadHost.isEmpty) {
     /// Huggingface url to download model
-    modelUri = Uri.parse(
-      "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-${model.modelName}.bin",
-    );
+    modelUri = Uri.parse("https://voiceinput.futo.org/VoiceInput/${model.modelName}_acft_q8_0.bin"
+        // "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-${model.modelName}.bin",
+        );
   } else {
     modelUri = Uri.parse(
       "$downloadHost/ggml-${model.modelName}.bin",

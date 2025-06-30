@@ -180,12 +180,15 @@ json transcribe(json jsonBody) noexcept
         wparams.translate = params.translate;
         wparams.language = params.language.c_str();
         wparams.n_threads = params.n_threads;
+        
         wparams.split_on_word = params.split_on_word;
 
         if (params.split_on_word) {
             wparams.max_len = 1;
             wparams.token_timestamps = true;
         }
+
+        wparams.audio_ctx = std::max(160, std::min(1500, (int)ceil((double)pcmf32.size() / (double)(320.0)) + 32));
 
         if (whisper_full(ctx, wparams, pcmf32.data(), pcmf32.size()) != 0)
         {

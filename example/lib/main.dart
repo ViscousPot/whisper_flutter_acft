@@ -31,8 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "Whisper for Flutter",
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Theme.of(context).colorScheme.primary),
+          colorScheme: ColorScheme.fromSeed(seedColor: Theme.of(context).colorScheme.primary),
           useMaterial3: true,
         ),
         home: const MyHomePage(),
@@ -133,8 +132,7 @@ class MyHomePage extends ConsumerWidget {
                       ],
                       onChanged: (bool? translate) {
                         if (translate != null) {
-                          ref.read(translateProvider.notifier).state =
-                              translate;
+                          ref.read(translateProvider.notifier).state = translate;
                         }
                       },
                     ),
@@ -154,8 +152,7 @@ class MyHomePage extends ConsumerWidget {
                       ],
                       onChanged: (bool? withSegments) {
                         if (withSegments != null) {
-                          ref.read(withSegmentsProvider.notifier).state =
-                              withSegments;
+                          ref.read(withSegmentsProvider.notifier).state = withSegments;
                         }
                       },
                     ),
@@ -175,8 +172,7 @@ class MyHomePage extends ConsumerWidget {
                       ],
                       onChanged: (bool? splitWords) {
                         if (splitWords != null) {
-                          ref.read(splitWordsProvider.notifier).state =
-                              splitWords;
+                          ref.read(splitWordsProvider.notifier).state = splitWords;
                         }
                       },
                     ),
@@ -186,29 +182,28 @@ class MyHomePage extends ConsumerWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () async {
-                            final Directory documentDirectory =
-                                await getApplicationDocumentsDirectory();
-                            final ByteData documentBytes =
-                                await rootBundle.load(
+                            final Directory documentDirectory = await getApplicationDocumentsDirectory();
+                            final ByteData documentBytes = await rootBundle.load(
                               "assets/jfk.wav",
                             );
 
-                            final String jfkPath =
-                                "${documentDirectory.path}/jfk.wav";
+                            final String jfkPath = "${documentDirectory.path}/jfk.wav";
 
                             await File(jfkPath).writeAsBytes(
                               documentBytes.buffer.asUint8List(),
                             );
 
+                            final start = DateTime.now();
                             await controller.transcribe(jfkPath);
+                            final end = DateTime.now();
+                            print("Transcription took: ${end.difference(start).inMilliseconds} ms");
                           },
                           child: const Text("jfk.wav"),
                         ),
                         const SizedBox(width: 20),
                         ElevatedButton(
                           onPressed: () async {
-                            final String? recordFilePath =
-                                await RecordPage.openRecordPage(
+                            final String? recordFilePath = await RecordPage.openRecordPage(
                               context,
                             );
 
@@ -229,17 +224,13 @@ class MyHomePage extends ConsumerWidget {
                       Text(
                         transcriptionResult.time.toString(),
                       ),
-                      if (transcriptionResult.transcription.segments !=
-                          null) ...[
+                      if (transcriptionResult.transcription.segments != null) ...[
                         const SizedBox(height: 25),
                         Expanded(
                           child: ListView.separated(
-                            itemCount: transcriptionResult
-                                .transcription.segments!.length,
+                            itemCount: transcriptionResult.transcription.segments!.length,
                             itemBuilder: (context, index) {
-                              final WhisperTranscribeSegment segment =
-                                  transcriptionResult
-                                      .transcription.segments![index];
+                              final WhisperTranscribeSegment segment = transcriptionResult.transcription.segments![index];
 
                               final Duration fromTs = segment.fromTs;
                               final Duration toTs = segment.toTs;

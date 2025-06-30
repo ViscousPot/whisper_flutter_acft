@@ -29,4 +29,9 @@ target_compile_options(whisper_flutter PRIVATE -O3 -s -flto=thin -fvisibility=hi
 target_link_options(whisper PRIVATE -Wl,--gc-sections,--exclude-libs,ALL)
 target_link_options(whisper_flutter PRIVATE -Wl,--gc-sections,--exclude-libs,ALL)
 target_compile_definitions(whisper_flutter PUBLIC DART_SHARED_LIB)
+
+if (ANDROID)
+  # Support Android 15 16k page size.
+  target_link_options(whisper_flutter PRIVATE "-Wl,-z,max-page-size=16384")
+endif()
 target_link_libraries(whisper_flutter PRIVATE whisper ${CMAKE_THREAD_LIBS_INIT})

@@ -22,9 +22,9 @@ class WhisperController extends StateNotifier<AsyncValue<TranscribeResult?>> {
     /// China: https://hf-mirror.com/ggerganov/whisper.cpp/resolve/main
     /// Other: https://huggingface.co/ggerganov/whisper.cpp/resolve/main
     final Whisper whisper = Whisper(
-        model: model,
-        downloadHost:
-            "https://huggingface.co/ggerganov/whisper.cpp/resolve/main");
+      model: model,
+      // downloadHost: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main"
+    );
 
     final DateTime start = DateTime.now();
 
@@ -51,8 +51,7 @@ class WhisperController extends StateNotifier<AsyncValue<TranscribeResult?>> {
         debugPrint("[Whisper]Number of core = ${cores}");
         debugPrint("[Whisper]Whisper version = $whisperVersion");
       }
-      final Directory documentDirectory =
-          await getApplicationDocumentsDirectory();
+      final Directory documentDirectory = await getApplicationDocumentsDirectory();
       final WhisperAudioconvert converter = WhisperAudioconvert(
         audioInput: File(filePath),
         audioOutput: File("${documentDirectory.path}/convert.wav"),
@@ -90,7 +89,6 @@ class WhisperController extends StateNotifier<AsyncValue<TranscribeResult?>> {
   }
 }
 
-final whisperControllerProvider = StateNotifierProvider.autoDispose<
-    WhisperController, AsyncValue<TranscribeResult?>>(
+final whisperControllerProvider = StateNotifierProvider.autoDispose<WhisperController, AsyncValue<TranscribeResult?>>(
   (ref) => WhisperController(ref),
 );
