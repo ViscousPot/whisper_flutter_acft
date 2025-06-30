@@ -188,7 +188,7 @@ json transcribe(json jsonBody) noexcept
             wparams.token_timestamps = true;
         }
 
-        wparams.audio_ctx = std::max(200, std::min(1500, (int)ceil((double)pcmf32.size() / (double)(320.0)) + 32));
+        wparams.audio_ctx = std::min(1500, (int)ceil((double)pcmf32.size() / (double)(320.0)) + 32);
 
         if (whisper_full(ctx, wparams, pcmf32.data(), pcmf32.size()) != 0)
         {
