@@ -7,7 +7,7 @@ import "package:system_info2/system_info2.dart";
 import "package:test_whisper/providers.dart";
 import "package:test_whisper/whisper_audio_convert.dart";
 import "package:test_whisper/whisper_result.dart";
-import "package:whisper_flutter_new/whisper_flutter_new.dart";
+import "package:whisper_flutter_acft/whisper_flutter_acft.dart";
 
 class WhisperController extends StateNotifier<AsyncValue<TranscribeResult?>> {
   WhisperController(this.ref) : super(const AsyncData(null));

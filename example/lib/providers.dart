@@ -1,5 +1,5 @@
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:whisper_flutter_new/whisper_flutter_new.dart";
+import "package:whisper_flutter_acft/whisper_flutter_acft.dart";
 
 final modelProvider = StateProvider.autoDispose((ref) => WhisperModel.base);
 

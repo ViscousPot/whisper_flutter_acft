@@ -13,7 +13,7 @@ PODS:
   - record_darwin (1.0.0):
     - Flutter
     - FlutterMacOS
-  - whisper_flutter_new (0.0.1):
+  - whisper_flutter_acft (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
@@ -21,7 +21,7 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - record_darwin (from `Flutter/ephemeral/.symlinks/plugins/record_darwin/macos`)
-  - whisper_flutter_new (from `Flutter/ephemeral/.symlinks/plugins/whisper_flutter_new/macos`)
+  - whisper_flutter_acft (from `Flutter/ephemeral/.symlinks/plugins/whisper_flutter_acft/macos`)
 
 SPEC REPOS:
   trunk:
@@ -36,8 +36,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   record_darwin:
     :path: Flutter/ephemeral/.symlinks/plugins/record_darwin/macos
-  whisper_flutter_new:
-    :path: Flutter/ephemeral/.symlinks/plugins/whisper_flutter_new/macos
+  whisper_flutter_acft:
+    :path: Flutter/ephemeral/.symlinks/plugins/whisper_flutter_acft/macos
 
 SPEC CHECKSUMS:
   ffmpeg-kit-macos-full-gpl: c9bd04ddd4dc777db0ecda4e342bb4f5ad972157
@@ -45,7 +45,7 @@ SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   record_darwin: 1f6619f2abac4d1ca91d3eeab038c980d76f1517
-  whisper_flutter_new: 6a658049000ed4a0dbe2231482921b7ac22ae36a
+  whisper_flutter_acft: 6a658049000ed4a0dbe2231482921b7ac22ae36a
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 

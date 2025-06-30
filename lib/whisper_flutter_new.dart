@@ -14,13 +14,13 @@ import "dart:isolate";
 import "package:ffi/ffi.dart";
 import "package:flutter/foundation.dart";
 import "package:path_provider/path_provider.dart";
-import "package:whisper_flutter_new/bean/_models.dart";
-import "package:whisper_flutter_new/bean/whisper_dto.dart";
-import "package:whisper_flutter_new/download_model.dart";
-import "package:whisper_flutter_new/whisper_bindings_generated.dart";
+import "package:whisper_flutter_acft/bean/_models.dart";
+import "package:whisper_flutter_acft/bean/whisper_dto.dart";
+import "package:whisper_flutter_acft/download_model.dart";
+import "package:whisper_flutter_acft/whisper_bindings_generated.dart";
 
-export "package:whisper_flutter_new/bean/_models.dart";
-export "package:whisper_flutter_new/download_model.dart" show WhisperModel;
+export "package:whisper_flutter_acft/bean/_models.dart";
+export "package:whisper_flutter_acft/download_model.dart" show WhisperModel;
 
 /// Entry point of whisper_flutter_plus
 class Whisper {
@@ -50,9 +50,7 @@ class Whisper {
     if (modelDir != null) {
       return modelDir!;
     }
-    final Directory libraryDirectory = Platform.isAndroid
-        ? await getApplicationSupportDirectory()
-        : await getLibraryDirectory();
+    final Directory libraryDirectory = Platform.isAndroid ? await getApplicationSupportDirectory() : await getLibraryDirectory();
     return libraryDirectory.path;
   }
 
@@ -66,8 +64,7 @@ class Whisper {
       }
       return;
     } else {
-      await downloadModel(
-          model: model, destinationPath: modelDir, downloadHost: downloadHost);
+      await downloadModel(model: model, destinationPath: modelDir, downloadHost: downloadHost);
     }
   }
 
@@ -79,10 +76,8 @@ class Whisper {
     }
     return Isolate.run(
       () async {
-        final Pointer<Utf8> data =
-            whisperRequest.toRequestString().toNativeUtf8();
-        final Pointer<Char> res =
-            WhisperFlutterBindings(_openLib()).request(data.cast<Char>());
+        final Pointer<Utf8> data = whisperRequest.toRequestString().toNativeUtf8();
+        final Pointer<Char> res = WhisperFlutterBindings(_openLib()).request(data.cast<Char>());
         final Map<String, dynamic> result = json.decode(
           res.cast<Utf8>().toDartString(),
         ) as Map<String, dynamic>;

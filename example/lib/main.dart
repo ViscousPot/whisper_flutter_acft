@@ -16,7 +16,7 @@ import "package:test_whisper/providers.dart";
 import "package:test_whisper/record_page.dart";
 import "package:test_whisper/whisper_controller.dart";
 import "package:test_whisper/whisper_result.dart";
-import "package:whisper_flutter_new/whisper_flutter_new.dart";
+import "package:whisper_flutter_acft/whisper_flutter_acft.dart";
 
 void main() {
   runApp(const MyApp());

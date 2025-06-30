@@ -1,9 +1,9 @@
-name: whisper_flutter_new
+name: whisper_flutter_acft
 description: A flutter library for offline speech-to-text conversion which use whisper.cpp models implementation for Android、iOS、macOS.
 version: 1.0.1
-repository: https://github.com/xuegao-tzx/whisper_flutter_new
-issue_tracker: https://github.com/xuegao-tzx/whisper_flutter_new/issues
-homepage: https://pub.dev/packages/whisper_flutter_new
+repository: https://github.com/ViscousPot/whisper_flutter_acft
+issue_tracker: https://github.com/ViscousPot/whisper_flutter_acft/issues
+# homepage: https://pub.dev/packages/whisper_flutter_acft
 
 platforms:
   android:

@@ -1,6 +1,6 @@
-# Whisper Flutter New
+# Whisper Flutter ACFT
 
-[![pub package](https://img.shields.io/pub/v/whisper_flutter_new.svg?label=whisper_flutter_new&color=blue)](https://pub.dev/packages/whisper_flutter_new)
+<!-- [![pub package](https://img.shields.io/pub/v/whisper_flutter_acft.svg?label=whisper_flutter_acft&color=blue)](https://pub.dev/packages/whisper_flutter_acft) -->
 
 # Important Notice:
 
@@ -23,13 +23,13 @@ simulator，MacOS: M1 MacBookPro & M2 MacMini
 ## Install library
 
 ```bash
-flutter pub add whisper_flutter_new
+flutter pub add whisper_flutter_acft
 ```
 
 ## import library
 
 ```dart
-import 'package:whisper_flutter_new/whisper_flutter_new.dart';
+import 'package:whisper_flutter_acft/whisper_flutter_acft.dart';
 ```
 
 ## Quickstart

@@ -8,7 +8,7 @@
 import "dart:convert";
 
 import "package:freezed_annotation/freezed_annotation.dart";
-import "package:whisper_flutter_new/bean/whisper_dto.dart";
+import "package:whisper_flutter_acft/bean/whisper_dto.dart";
 
 part "request_bean.freezed.dart";
 part "request_bean.g.dart";
@@ -29,14 +29,11 @@ class TranscribeRequest with _$TranscribeRequest {
     @Default(false) bool diarize,
     @Default(false) bool speedUp,
   }) = _TranscribeRequest;
-  factory TranscribeRequest.fromJson(Map<String, dynamic> json) =>
-      _$TranscribeRequestFromJson(json);
+  factory TranscribeRequest.fromJson(Map<String, dynamic> json) => _$TranscribeRequestFromJson(json);
 }
 
 @freezed
-class TranscribeRequestDto
-    with _$TranscribeRequestDto
-    implements WhisperRequestDto {
+class TranscribeRequestDto with _$TranscribeRequestDto implements WhisperRequestDto {
   const factory TranscribeRequestDto({
     required String audio,
     required String model,
@@ -77,8 +74,7 @@ class TranscribeRequestDto
   const TranscribeRequestDto._();
 
   /// Create request json
-  factory TranscribeRequestDto.fromJson(Map<String, dynamic> json) =>
-      _$TranscribeRequestDtoFromJson(json);
+  factory TranscribeRequestDto.fromJson(Map<String, dynamic> json) => _$TranscribeRequestDtoFromJson(json);
 
   @override
   String get specialType => "getTextFromWavFile";
