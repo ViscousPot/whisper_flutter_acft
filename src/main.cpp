@@ -60,6 +60,7 @@ struct whisper_params
 
     std::string language = "auto";
     std::string prompt;
+    std::string initial_prompt;
     std::string model = "models/ggml-tiny.bin";
     std::string audio = "samples/jfk.wav";
     std::vector<std::string> fname_inp = {};
