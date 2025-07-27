@@ -81,6 +81,7 @@ json transcribe(json jsonBody) noexcept
     params.verbose = jsonBody["is_verbose"];
     params.translate = jsonBody["is_translate"];
     params.language = jsonBody["language"];
+    params.initial_prompt = jsonBody["initial_prompt"];
     params.print_special_tokens = jsonBody["is_special_tokens"];
     params.no_timestamps = jsonBody["is_no_timestamps"];
     params.model = jsonBody["model"];
@@ -179,6 +180,7 @@ json transcribe(json jsonBody) noexcept
         // wparams.print_special_tokens = params.print_special_tokens;
         wparams.translate = params.translate;
         wparams.language = params.language.c_str();
+        wparams.initial_prompt = params.initial_prompt.c_str();
         wparams.n_threads = params.n_threads;
         
         wparams.split_on_word = params.split_on_word;
