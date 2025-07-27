@@ -6,9 +6,9 @@ part of 'response_bean.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_WhisperTranscribeResponse _$WhisperTranscribeResponseFromJson(
+_$WhisperTranscribeResponseImpl _$$WhisperTranscribeResponseImplFromJson(
         Map<String, dynamic> json) =>
-    _WhisperTranscribeResponse(
+    _$WhisperTranscribeResponseImpl(
       type: json['@type'] as String,
       text: json['text'] as String,
       segments: (json['segments'] as List<dynamic>?)
@@ -17,17 +17,17 @@ _WhisperTranscribeResponse _$WhisperTranscribeResponseFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$WhisperTranscribeResponseToJson(
-        _WhisperTranscribeResponse instance) =>
+Map<String, dynamic> _$$WhisperTranscribeResponseImplToJson(
+        _$WhisperTranscribeResponseImpl instance) =>
     <String, dynamic>{
       '@type': instance.type,
       'text': instance.text,
       'segments': instance.segments,
     };
 
-_WhisperTranscribeSegment _$WhisperTranscribeSegmentFromJson(
+_$WhisperTranscribeSegmentImpl _$$WhisperTranscribeSegmentImplFromJson(
         Map<String, dynamic> json) =>
-    _WhisperTranscribeSegment(
+    _$WhisperTranscribeSegmentImpl(
       fromTs: WhisperTranscribeSegment._durationFromInt(
           (json['from_ts'] as num).toInt()),
       toTs: WhisperTranscribeSegment._durationFromInt(
@@ -35,23 +35,23 @@ _WhisperTranscribeSegment _$WhisperTranscribeSegmentFromJson(
       text: json['text'] as String,
     );
 
-Map<String, dynamic> _$WhisperTranscribeSegmentToJson(
-        _WhisperTranscribeSegment instance) =>
+Map<String, dynamic> _$$WhisperTranscribeSegmentImplToJson(
+        _$WhisperTranscribeSegmentImpl instance) =>
     <String, dynamic>{
       'from_ts': instance.fromTs.inMicroseconds,
       'to_ts': instance.toTs.inMicroseconds,
       'text': instance.text,
     };
 
-_WhisperVersionResponse _$WhisperVersionResponseFromJson(
+_$WhisperVersionResponseImpl _$$WhisperVersionResponseImplFromJson(
         Map<String, dynamic> json) =>
-    _WhisperVersionResponse(
+    _$WhisperVersionResponseImpl(
       type: json['@type'] as String,
       message: json['message'] as String,
     );
 
-Map<String, dynamic> _$WhisperVersionResponseToJson(
-        _WhisperVersionResponse instance) =>
+Map<String, dynamic> _$$WhisperVersionResponseImplToJson(
+        _$WhisperVersionResponseImpl instance) =>
     <String, dynamic>{
       '@type': instance.type,
       'message': instance.message,

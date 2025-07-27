@@ -1,4 +1,3 @@
-// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -10,44 +9,46 @@ part of 'response_bean.dart';
 // FreezedGenerator
 // **************************************************************************
 
-// dart format off
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+
+WhisperTranscribeResponse _$WhisperTranscribeResponseFromJson(
+    Map<String, dynamic> json) {
+  return _WhisperTranscribeResponse.fromJson(json);
+}
 
 /// @nodoc
 mixin _$WhisperTranscribeResponse {
   @JsonKey(name: "@type")
-  String get type;
+  String get type => throw _privateConstructorUsedError;
   @JsonKey(name: "@type")
-  set type(String value);
-  String get text;
-  set text(String value);
+  set type(String value) => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  set text(String value) => throw _privateConstructorUsedError;
   @JsonKey(name: "segments")
-  List<WhisperTranscribeSegment>? get segments;
+  List<WhisperTranscribeSegment>? get segments =>
+      throw _privateConstructorUsedError;
   @JsonKey(name: "segments")
-  set segments(List<WhisperTranscribeSegment>? value);
+  set segments(List<WhisperTranscribeSegment>? value) =>
+      throw _privateConstructorUsedError;
+
+  /// Serializes this WhisperTranscribeResponse to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of WhisperTranscribeResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
   $WhisperTranscribeResponseCopyWith<WhisperTranscribeResponse> get copyWith =>
-      _$WhisperTranscribeResponseCopyWithImpl<WhisperTranscribeResponse>(
-          this as WhisperTranscribeResponse, _$identity);
-
-  /// Serializes this WhisperTranscribeResponse to a JSON map.
-  Map<String, dynamic> toJson();
-
-  @override
-  String toString() {
-    return 'WhisperTranscribeResponse(type: $type, text: $text, segments: $segments)';
-  }
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $WhisperTranscribeResponseCopyWith<$Res> {
+abstract class $WhisperTranscribeResponseCopyWith<$Res> {
   factory $WhisperTranscribeResponseCopyWith(WhisperTranscribeResponse value,
-          $Res Function(WhisperTranscribeResponse) _then) =
-      _$WhisperTranscribeResponseCopyWithImpl;
+          $Res Function(WhisperTranscribeResponse) then) =
+      _$WhisperTranscribeResponseCopyWithImpl<$Res, WhisperTranscribeResponse>;
   @useResult
   $Res call(
       {@JsonKey(name: "@type") String type,
@@ -56,12 +57,15 @@ abstract mixin class $WhisperTranscribeResponseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$WhisperTranscribeResponseCopyWithImpl<$Res>
+class _$WhisperTranscribeResponseCopyWithImpl<$Res,
+        $Val extends WhisperTranscribeResponse>
     implements $WhisperTranscribeResponseCopyWith<$Res> {
-  _$WhisperTranscribeResponseCopyWithImpl(this._self, this._then);
+  _$WhisperTranscribeResponseCopyWithImpl(this._value, this._then);
 
-  final WhisperTranscribeResponse _self;
-  final $Res Function(WhisperTranscribeResponse) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
   /// Create a copy of WhisperTranscribeResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -72,17 +76,68 @@ class _$WhisperTranscribeResponseCopyWithImpl<$Res>
     Object? text = null,
     Object? segments = freezed,
   }) {
-    return _then(_self.copyWith(
+    return _then(_value.copyWith(
       type: null == type
-          ? _self.type
+          ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
-          ? _self.text
+          ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
       segments: freezed == segments
-          ? _self.segments
+          ? _value.segments
+          : segments // ignore: cast_nullable_to_non_nullable
+              as List<WhisperTranscribeSegment>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$WhisperTranscribeResponseImplCopyWith<$Res>
+    implements $WhisperTranscribeResponseCopyWith<$Res> {
+  factory _$$WhisperTranscribeResponseImplCopyWith(
+          _$WhisperTranscribeResponseImpl value,
+          $Res Function(_$WhisperTranscribeResponseImpl) then) =
+      __$$WhisperTranscribeResponseImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "@type") String type,
+      String text,
+      @JsonKey(name: "segments") List<WhisperTranscribeSegment>? segments});
+}
+
+/// @nodoc
+class __$$WhisperTranscribeResponseImplCopyWithImpl<$Res>
+    extends _$WhisperTranscribeResponseCopyWithImpl<$Res,
+        _$WhisperTranscribeResponseImpl>
+    implements _$$WhisperTranscribeResponseImplCopyWith<$Res> {
+  __$$WhisperTranscribeResponseImplCopyWithImpl(
+      _$WhisperTranscribeResponseImpl _value,
+      $Res Function(_$WhisperTranscribeResponseImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of WhisperTranscribeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+    Object? text = null,
+    Object? segments = freezed,
+  }) {
+    return _then(_$WhisperTranscribeResponseImpl(
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      segments: freezed == segments
+          ? _value.segments
           : segments // ignore: cast_nullable_to_non_nullable
               as List<WhisperTranscribeSegment>?,
     ));
@@ -91,13 +146,14 @@ class _$WhisperTranscribeResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _WhisperTranscribeResponse implements WhisperTranscribeResponse {
-  _WhisperTranscribeResponse(
+class _$WhisperTranscribeResponseImpl implements _WhisperTranscribeResponse {
+  _$WhisperTranscribeResponseImpl(
       {@JsonKey(name: "@type") required this.type,
       required this.text,
       @JsonKey(name: "segments") required this.segments});
-  factory _WhisperTranscribeResponse.fromJson(Map<String, dynamic> json) =>
-      _$WhisperTranscribeResponseFromJson(json);
+
+  factory _$WhisperTranscribeResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WhisperTranscribeResponseImplFromJson(json);
 
   @override
   @JsonKey(name: "@type")
@@ -108,112 +164,94 @@ class _WhisperTranscribeResponse implements WhisperTranscribeResponse {
   @JsonKey(name: "segments")
   List<WhisperTranscribeSegment>? segments;
 
-  /// Create a copy of WhisperTranscribeResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$WhisperTranscribeResponseCopyWith<_WhisperTranscribeResponse>
-      get copyWith =>
-          __$WhisperTranscribeResponseCopyWithImpl<_WhisperTranscribeResponse>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$WhisperTranscribeResponseToJson(
-      this,
-    );
-  }
-
   @override
   String toString() {
     return 'WhisperTranscribeResponse(type: $type, text: $text, segments: $segments)';
   }
-}
 
-/// @nodoc
-abstract mixin class _$WhisperTranscribeResponseCopyWith<$Res>
-    implements $WhisperTranscribeResponseCopyWith<$Res> {
-  factory _$WhisperTranscribeResponseCopyWith(_WhisperTranscribeResponse value,
-          $Res Function(_WhisperTranscribeResponse) _then) =
-      __$WhisperTranscribeResponseCopyWithImpl;
+  /// Create a copy of WhisperTranscribeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: "@type") String type,
-      String text,
-      @JsonKey(name: "segments") List<WhisperTranscribeSegment>? segments});
+  @pragma('vm:prefer-inline')
+  _$$WhisperTranscribeResponseImplCopyWith<_$WhisperTranscribeResponseImpl>
+      get copyWith => __$$WhisperTranscribeResponseImplCopyWithImpl<
+          _$WhisperTranscribeResponseImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$WhisperTranscribeResponseImplToJson(
+      this,
+    );
+  }
 }
 
-/// @nodoc
-class __$WhisperTranscribeResponseCopyWithImpl<$Res>
-    implements _$WhisperTranscribeResponseCopyWith<$Res> {
-  __$WhisperTranscribeResponseCopyWithImpl(this._self, this._then);
+abstract class _WhisperTranscribeResponse implements WhisperTranscribeResponse {
+  factory _WhisperTranscribeResponse(
+          {@JsonKey(name: "@type") required String type,
+          required String text,
+          @JsonKey(name: "segments")
+          required List<WhisperTranscribeSegment>? segments}) =
+      _$WhisperTranscribeResponseImpl;
 
-  final _WhisperTranscribeResponse _self;
-  final $Res Function(_WhisperTranscribeResponse) _then;
+  factory _WhisperTranscribeResponse.fromJson(Map<String, dynamic> json) =
+      _$WhisperTranscribeResponseImpl.fromJson;
+
+  @override
+  @JsonKey(name: "@type")
+  String get type;
+  @JsonKey(name: "@type")
+  set type(String value);
+  @override
+  String get text;
+  set text(String value);
+  @override
+  @JsonKey(name: "segments")
+  List<WhisperTranscribeSegment>? get segments;
+  @JsonKey(name: "segments")
+  set segments(List<WhisperTranscribeSegment>? value);
 
   /// Create a copy of WhisperTranscribeResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? type = null,
-    Object? text = null,
-    Object? segments = freezed,
-  }) {
-    return _then(_WhisperTranscribeResponse(
-      type: null == type
-          ? _self.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      text: null == text
-          ? _self.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      segments: freezed == segments
-          ? _self.segments
-          : segments // ignore: cast_nullable_to_non_nullable
-              as List<WhisperTranscribeSegment>?,
-    ));
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$WhisperTranscribeResponseImplCopyWith<_$WhisperTranscribeResponseImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+WhisperTranscribeSegment _$WhisperTranscribeSegmentFromJson(
+    Map<String, dynamic> json) {
+  return _WhisperTranscribeSegment.fromJson(json);
 }
 
 /// @nodoc
 mixin _$WhisperTranscribeSegment {
   @JsonKey(name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
-  Duration get fromTs;
+  Duration get fromTs => throw _privateConstructorUsedError;
   @JsonKey(name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
-  set fromTs(Duration value);
+  set fromTs(Duration value) => throw _privateConstructorUsedError;
   @JsonKey(name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
-  Duration get toTs;
+  Duration get toTs => throw _privateConstructorUsedError;
   @JsonKey(name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
-  set toTs(Duration value);
-  String get text;
-  set text(String value);
+  set toTs(Duration value) => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  set text(String value) => throw _privateConstructorUsedError;
+
+  /// Serializes this WhisperTranscribeSegment to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of WhisperTranscribeSegment
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
   $WhisperTranscribeSegmentCopyWith<WhisperTranscribeSegment> get copyWith =>
-      _$WhisperTranscribeSegmentCopyWithImpl<WhisperTranscribeSegment>(
-          this as WhisperTranscribeSegment, _$identity);
-
-  /// Serializes this WhisperTranscribeSegment to a JSON map.
-  Map<String, dynamic> toJson();
-
-  @override
-  String toString() {
-    return 'WhisperTranscribeSegment(fromTs: $fromTs, toTs: $toTs, text: $text)';
-  }
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $WhisperTranscribeSegmentCopyWith<$Res> {
+abstract class $WhisperTranscribeSegmentCopyWith<$Res> {
   factory $WhisperTranscribeSegmentCopyWith(WhisperTranscribeSegment value,
-          $Res Function(WhisperTranscribeSegment) _then) =
-      _$WhisperTranscribeSegmentCopyWithImpl;
+          $Res Function(WhisperTranscribeSegment) then) =
+      _$WhisperTranscribeSegmentCopyWithImpl<$Res, WhisperTranscribeSegment>;
   @useResult
   $Res call(
       {@JsonKey(
@@ -226,12 +264,15 @@ abstract mixin class $WhisperTranscribeSegmentCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$WhisperTranscribeSegmentCopyWithImpl<$Res>
+class _$WhisperTranscribeSegmentCopyWithImpl<$Res,
+        $Val extends WhisperTranscribeSegment>
     implements $WhisperTranscribeSegmentCopyWith<$Res> {
-  _$WhisperTranscribeSegmentCopyWithImpl(this._self, this._then);
+  _$WhisperTranscribeSegmentCopyWithImpl(this._value, this._then);
 
-  final WhisperTranscribeSegment _self;
-  final $Res Function(WhisperTranscribeSegment) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
   /// Create a copy of WhisperTranscribeSegment
   /// with the given fields replaced by the non-null parameter values.
@@ -242,17 +283,72 @@ class _$WhisperTranscribeSegmentCopyWithImpl<$Res>
     Object? toTs = null,
     Object? text = null,
   }) {
-    return _then(_self.copyWith(
+    return _then(_value.copyWith(
       fromTs: null == fromTs
-          ? _self.fromTs
+          ? _value.fromTs
           : fromTs // ignore: cast_nullable_to_non_nullable
               as Duration,
       toTs: null == toTs
-          ? _self.toTs
+          ? _value.toTs
           : toTs // ignore: cast_nullable_to_non_nullable
               as Duration,
       text: null == text
-          ? _self.text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$WhisperTranscribeSegmentImplCopyWith<$Res>
+    implements $WhisperTranscribeSegmentCopyWith<$Res> {
+  factory _$$WhisperTranscribeSegmentImplCopyWith(
+          _$WhisperTranscribeSegmentImpl value,
+          $Res Function(_$WhisperTranscribeSegmentImpl) then) =
+      __$$WhisperTranscribeSegmentImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(
+          name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
+      Duration fromTs,
+      @JsonKey(
+          name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
+      Duration toTs,
+      String text});
+}
+
+/// @nodoc
+class __$$WhisperTranscribeSegmentImplCopyWithImpl<$Res>
+    extends _$WhisperTranscribeSegmentCopyWithImpl<$Res,
+        _$WhisperTranscribeSegmentImpl>
+    implements _$$WhisperTranscribeSegmentImplCopyWith<$Res> {
+  __$$WhisperTranscribeSegmentImplCopyWithImpl(
+      _$WhisperTranscribeSegmentImpl _value,
+      $Res Function(_$WhisperTranscribeSegmentImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of WhisperTranscribeSegment
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fromTs = null,
+    Object? toTs = null,
+    Object? text = null,
+  }) {
+    return _then(_$WhisperTranscribeSegmentImpl(
+      fromTs: null == fromTs
+          ? _value.fromTs
+          : fromTs // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      toTs: null == toTs
+          ? _value.toTs
+          : toTs // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      text: null == text
+          ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -261,8 +357,8 @@ class _$WhisperTranscribeSegmentCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _WhisperTranscribeSegment implements WhisperTranscribeSegment {
-  _WhisperTranscribeSegment(
+class _$WhisperTranscribeSegmentImpl implements _WhisperTranscribeSegment {
+  _$WhisperTranscribeSegmentImpl(
       {@JsonKey(
           name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
       required this.fromTs,
@@ -270,8 +366,9 @@ class _WhisperTranscribeSegment implements WhisperTranscribeSegment {
           name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
       required this.toTs,
       required this.text});
-  factory _WhisperTranscribeSegment.fromJson(Map<String, dynamic> json) =>
-      _$WhisperTranscribeSegmentFromJson(json);
+
+  factory _$WhisperTranscribeSegmentImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WhisperTranscribeSegmentImplFromJson(json);
 
   @override
   @JsonKey(name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
@@ -282,122 +379,106 @@ class _WhisperTranscribeSegment implements WhisperTranscribeSegment {
   @override
   String text;
 
-  /// Create a copy of WhisperTranscribeSegment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$WhisperTranscribeSegmentCopyWith<_WhisperTranscribeSegment> get copyWith =>
-      __$WhisperTranscribeSegmentCopyWithImpl<_WhisperTranscribeSegment>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$WhisperTranscribeSegmentToJson(
-      this,
-    );
-  }
-
   @override
   String toString() {
     return 'WhisperTranscribeSegment(fromTs: $fromTs, toTs: $toTs, text: $text)';
   }
+
+  /// Create a copy of WhisperTranscribeSegment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WhisperTranscribeSegmentImplCopyWith<_$WhisperTranscribeSegmentImpl>
+      get copyWith => __$$WhisperTranscribeSegmentImplCopyWithImpl<
+          _$WhisperTranscribeSegmentImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$WhisperTranscribeSegmentImplToJson(
+      this,
+    );
+  }
 }
 
-/// @nodoc
-abstract mixin class _$WhisperTranscribeSegmentCopyWith<$Res>
-    implements $WhisperTranscribeSegmentCopyWith<$Res> {
-  factory _$WhisperTranscribeSegmentCopyWith(_WhisperTranscribeSegment value,
-          $Res Function(_WhisperTranscribeSegment) _then) =
-      __$WhisperTranscribeSegmentCopyWithImpl;
-  @override
-  @useResult
-  $Res call(
+abstract class _WhisperTranscribeSegment implements WhisperTranscribeSegment {
+  factory _WhisperTranscribeSegment(
       {@JsonKey(
           name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
-      Duration fromTs,
+      required Duration fromTs,
       @JsonKey(
           name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
-      Duration toTs,
-      String text});
-}
+      required Duration toTs,
+      required String text}) = _$WhisperTranscribeSegmentImpl;
 
-/// @nodoc
-class __$WhisperTranscribeSegmentCopyWithImpl<$Res>
-    implements _$WhisperTranscribeSegmentCopyWith<$Res> {
-  __$WhisperTranscribeSegmentCopyWithImpl(this._self, this._then);
+  factory _WhisperTranscribeSegment.fromJson(Map<String, dynamic> json) =
+      _$WhisperTranscribeSegmentImpl.fromJson;
 
-  final _WhisperTranscribeSegment _self;
-  final $Res Function(_WhisperTranscribeSegment) _then;
+  @override
+  @JsonKey(name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
+  Duration get fromTs;
+  @JsonKey(name: "from_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
+  set fromTs(Duration value);
+  @override
+  @JsonKey(name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
+  Duration get toTs;
+  @JsonKey(name: "to_ts", fromJson: WhisperTranscribeSegment._durationFromInt)
+  set toTs(Duration value);
+  @override
+  String get text;
+  set text(String value);
 
   /// Create a copy of WhisperTranscribeSegment
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? fromTs = null,
-    Object? toTs = null,
-    Object? text = null,
-  }) {
-    return _then(_WhisperTranscribeSegment(
-      fromTs: null == fromTs
-          ? _self.fromTs
-          : fromTs // ignore: cast_nullable_to_non_nullable
-              as Duration,
-      toTs: null == toTs
-          ? _self.toTs
-          : toTs // ignore: cast_nullable_to_non_nullable
-              as Duration,
-      text: null == text
-          ? _self.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$WhisperTranscribeSegmentImplCopyWith<_$WhisperTranscribeSegmentImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+WhisperVersionResponse _$WhisperVersionResponseFromJson(
+    Map<String, dynamic> json) {
+  return _WhisperVersionResponse.fromJson(json);
 }
 
 /// @nodoc
 mixin _$WhisperVersionResponse {
   @JsonKey(name: "@type")
-  String get type;
+  String get type => throw _privateConstructorUsedError;
   @JsonKey(name: "@type")
-  set type(String value);
-  String get message;
-  set message(String value);
+  set type(String value) => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
+  set message(String value) => throw _privateConstructorUsedError;
+
+  /// Serializes this WhisperVersionResponse to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of WhisperVersionResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
   $WhisperVersionResponseCopyWith<WhisperVersionResponse> get copyWith =>
-      _$WhisperVersionResponseCopyWithImpl<WhisperVersionResponse>(
-          this as WhisperVersionResponse, _$identity);
-
-  /// Serializes this WhisperVersionResponse to a JSON map.
-  Map<String, dynamic> toJson();
-
-  @override
-  String toString() {
-    return 'WhisperVersionResponse(type: $type, message: $message)';
-  }
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $WhisperVersionResponseCopyWith<$Res> {
+abstract class $WhisperVersionResponseCopyWith<$Res> {
   factory $WhisperVersionResponseCopyWith(WhisperVersionResponse value,
-          $Res Function(WhisperVersionResponse) _then) =
-      _$WhisperVersionResponseCopyWithImpl;
+          $Res Function(WhisperVersionResponse) then) =
+      _$WhisperVersionResponseCopyWithImpl<$Res, WhisperVersionResponse>;
   @useResult
   $Res call({@JsonKey(name: "@type") String type, String message});
 }
 
 /// @nodoc
-class _$WhisperVersionResponseCopyWithImpl<$Res>
+class _$WhisperVersionResponseCopyWithImpl<$Res,
+        $Val extends WhisperVersionResponse>
     implements $WhisperVersionResponseCopyWith<$Res> {
-  _$WhisperVersionResponseCopyWithImpl(this._self, this._then);
+  _$WhisperVersionResponseCopyWithImpl(this._value, this._then);
 
-  final WhisperVersionResponse _self;
-  final $Res Function(WhisperVersionResponse) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
   /// Create a copy of WhisperVersionResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -407,13 +488,56 @@ class _$WhisperVersionResponseCopyWithImpl<$Res>
     Object? type = null,
     Object? message = null,
   }) {
-    return _then(_self.copyWith(
+    return _then(_value.copyWith(
       type: null == type
-          ? _self.type
+          ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
       message: null == message
-          ? _self.message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$WhisperVersionResponseImplCopyWith<$Res>
+    implements $WhisperVersionResponseCopyWith<$Res> {
+  factory _$$WhisperVersionResponseImplCopyWith(
+          _$WhisperVersionResponseImpl value,
+          $Res Function(_$WhisperVersionResponseImpl) then) =
+      __$$WhisperVersionResponseImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({@JsonKey(name: "@type") String type, String message});
+}
+
+/// @nodoc
+class __$$WhisperVersionResponseImplCopyWithImpl<$Res>
+    extends _$WhisperVersionResponseCopyWithImpl<$Res,
+        _$WhisperVersionResponseImpl>
+    implements _$$WhisperVersionResponseImplCopyWith<$Res> {
+  __$$WhisperVersionResponseImplCopyWithImpl(
+      _$WhisperVersionResponseImpl _value,
+      $Res Function(_$WhisperVersionResponseImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of WhisperVersionResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+    Object? message = null,
+  }) {
+    return _then(_$WhisperVersionResponseImpl(
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -422,11 +546,12 @@ class _$WhisperVersionResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _WhisperVersionResponse implements WhisperVersionResponse {
-  _WhisperVersionResponse(
+class _$WhisperVersionResponseImpl implements _WhisperVersionResponse {
+  _$WhisperVersionResponseImpl(
       {@JsonKey(name: "@type") required this.type, required this.message});
-  factory _WhisperVersionResponse.fromJson(Map<String, dynamic> json) =>
-      _$WhisperVersionResponseFromJson(json);
+
+  factory _$WhisperVersionResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WhisperVersionResponseImplFromJson(json);
 
   @override
   @JsonKey(name: "@type")
@@ -434,66 +559,49 @@ class _WhisperVersionResponse implements WhisperVersionResponse {
   @override
   String message;
 
-  /// Create a copy of WhisperVersionResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$WhisperVersionResponseCopyWith<_WhisperVersionResponse> get copyWith =>
-      __$WhisperVersionResponseCopyWithImpl<_WhisperVersionResponse>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$WhisperVersionResponseToJson(
-      this,
-    );
-  }
-
   @override
   String toString() {
     return 'WhisperVersionResponse(type: $type, message: $message)';
   }
-}
 
-/// @nodoc
-abstract mixin class _$WhisperVersionResponseCopyWith<$Res>
-    implements $WhisperVersionResponseCopyWith<$Res> {
-  factory _$WhisperVersionResponseCopyWith(_WhisperVersionResponse value,
-          $Res Function(_WhisperVersionResponse) _then) =
-      __$WhisperVersionResponseCopyWithImpl;
+  /// Create a copy of WhisperVersionResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @useResult
-  $Res call({@JsonKey(name: "@type") String type, String message});
+  @pragma('vm:prefer-inline')
+  _$$WhisperVersionResponseImplCopyWith<_$WhisperVersionResponseImpl>
+      get copyWith => __$$WhisperVersionResponseImplCopyWithImpl<
+          _$WhisperVersionResponseImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$WhisperVersionResponseImplToJson(
+      this,
+    );
+  }
 }
 
-/// @nodoc
-class __$WhisperVersionResponseCopyWithImpl<$Res>
-    implements _$WhisperVersionResponseCopyWith<$Res> {
-  __$WhisperVersionResponseCopyWithImpl(this._self, this._then);
+abstract class _WhisperVersionResponse implements WhisperVersionResponse {
+  factory _WhisperVersionResponse(
+      {@JsonKey(name: "@type") required String type,
+      required String message}) = _$WhisperVersionResponseImpl;
 
-  final _WhisperVersionResponse _self;
-  final $Res Function(_WhisperVersionResponse) _then;
+  factory _WhisperVersionResponse.fromJson(Map<String, dynamic> json) =
+      _$WhisperVersionResponseImpl.fromJson;
+
+  @override
+  @JsonKey(name: "@type")
+  String get type;
+  @JsonKey(name: "@type")
+  set type(String value);
+  @override
+  String get message;
+  set message(String value);
 
   /// Create a copy of WhisperVersionResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? type = null,
-    Object? message = null,
-  }) {
-    return _then(_WhisperVersionResponse(
-      type: null == type
-          ? _self.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
-          ? _self.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$WhisperVersionResponseImplCopyWith<_$WhisperVersionResponseImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
-
-// dart format on

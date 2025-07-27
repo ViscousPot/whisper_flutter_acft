@@ -6,8 +6,9 @@ part of 'request_bean.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_TranscribeRequest _$TranscribeRequestFromJson(Map<String, dynamic> json) =>
-    _TranscribeRequest(
+_$TranscribeRequestImpl _$$TranscribeRequestImplFromJson(
+        Map<String, dynamic> json) =>
+    _$TranscribeRequestImpl(
       audio: json['audio'] as String,
       isTranslate: json['isTranslate'] as bool? ?? false,
       threads: (json['threads'] as num?)?.toInt() ?? 6,
@@ -23,7 +24,8 @@ _TranscribeRequest _$TranscribeRequestFromJson(Map<String, dynamic> json) =>
       speedUp: json['speedUp'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$TranscribeRequestToJson(_TranscribeRequest instance) =>
+Map<String, dynamic> _$$TranscribeRequestImplToJson(
+        _$TranscribeRequestImpl instance) =>
     <String, dynamic>{
       'audio': instance.audio,
       'isTranslate': instance.isTranslate,
@@ -40,9 +42,9 @@ Map<String, dynamic> _$TranscribeRequestToJson(_TranscribeRequest instance) =>
       'speedUp': instance.speedUp,
     };
 
-_TranscribeRequestDto _$TranscribeRequestDtoFromJson(
+_$TranscribeRequestDtoImpl _$$TranscribeRequestDtoImplFromJson(
         Map<String, dynamic> json) =>
-    _TranscribeRequestDto(
+    _$TranscribeRequestDtoImpl(
       audio: json['audio'] as String,
       model: json['model'] as String,
       isTranslate: json['is_translate'] as bool,
@@ -59,8 +61,8 @@ _TranscribeRequestDto _$TranscribeRequestDtoFromJson(
       speedUp: json['speed_up'] as bool,
     );
 
-Map<String, dynamic> _$TranscribeRequestDtoToJson(
-        _TranscribeRequestDto instance) =>
+Map<String, dynamic> _$$TranscribeRequestDtoImplToJson(
+        _$TranscribeRequestDtoImpl instance) =>
     <String, dynamic>{
       'audio': instance.audio,
       'model': instance.model,
