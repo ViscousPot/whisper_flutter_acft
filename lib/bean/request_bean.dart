@@ -43,7 +43,7 @@ class TranscribeRequestDto with _$TranscribeRequestDto implements WhisperRequest
     @JsonKey(name: "is_verbose") required bool isVerbose,
     required String language,
     @JsonKey(name: "is_special_tokens") required bool isSpecialTokens,
-    @JsonKey(name: "initial_promot") required String initialPrompt,
+    @JsonKey(name: "initial_prompt") required String initialPrompt,
     @JsonKey(name: "is_no_timestamps") required bool isNoTimestamps,
     @JsonKey(name: "n_processors") required int nProcessors,
     @JsonKey(name: "split_on_word") required bool splitOnWord,

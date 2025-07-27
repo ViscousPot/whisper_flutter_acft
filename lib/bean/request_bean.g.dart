@@ -6,9 +6,7 @@ part of 'request_bean.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TranscribeRequestImpl _$$TranscribeRequestImplFromJson(
-        Map<String, dynamic> json) =>
-    _$TranscribeRequestImpl(
+_$TranscribeRequestImpl _$$TranscribeRequestImplFromJson(Map<String, dynamic> json) => _$TranscribeRequestImpl(
       audio: json['audio'] as String,
       isTranslate: json['isTranslate'] as bool? ?? false,
       threads: (json['threads'] as num?)?.toInt() ?? 6,
@@ -24,9 +22,7 @@ _$TranscribeRequestImpl _$$TranscribeRequestImplFromJson(
       speedUp: json['speedUp'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$TranscribeRequestImplToJson(
-        _$TranscribeRequestImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$TranscribeRequestImplToJson(_$TranscribeRequestImpl instance) => <String, dynamic>{
       'audio': instance.audio,
       'isTranslate': instance.isTranslate,
       'threads': instance.threads,
@@ -42,9 +38,7 @@ Map<String, dynamic> _$$TranscribeRequestImplToJson(
       'speedUp': instance.speedUp,
     };
 
-_$TranscribeRequestDtoImpl _$$TranscribeRequestDtoImplFromJson(
-        Map<String, dynamic> json) =>
-    _$TranscribeRequestDtoImpl(
+_$TranscribeRequestDtoImpl _$$TranscribeRequestDtoImplFromJson(Map<String, dynamic> json) => _$TranscribeRequestDtoImpl(
       audio: json['audio'] as String,
       model: json['model'] as String,
       isTranslate: json['is_translate'] as bool,
@@ -52,7 +46,7 @@ _$TranscribeRequestDtoImpl _$$TranscribeRequestDtoImplFromJson(
       isVerbose: json['is_verbose'] as bool,
       language: json['language'] as String,
       isSpecialTokens: json['is_special_tokens'] as bool,
-      initialPrompt: json['initial_promot'] as String,
+      initialPrompt: json['initial_prompt'] as String,
       isNoTimestamps: json['is_no_timestamps'] as bool,
       nProcessors: (json['n_processors'] as num).toInt(),
       splitOnWord: json['split_on_word'] as bool,
@@ -61,9 +55,7 @@ _$TranscribeRequestDtoImpl _$$TranscribeRequestDtoImplFromJson(
       speedUp: json['speed_up'] as bool,
     );
 
-Map<String, dynamic> _$$TranscribeRequestDtoImplToJson(
-        _$TranscribeRequestDtoImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$TranscribeRequestDtoImplToJson(_$TranscribeRequestDtoImpl instance) => <String, dynamic>{
       'audio': instance.audio,
       'model': instance.model,
       'is_translate': instance.isTranslate,
@@ -71,7 +63,7 @@ Map<String, dynamic> _$$TranscribeRequestDtoImplToJson(
       'is_verbose': instance.isVerbose,
       'language': instance.language,
       'is_special_tokens': instance.isSpecialTokens,
-      'initial_promot': instance.initialPrompt,
+      'initial_prompt': instance.initialPrompt,
       'is_no_timestamps': instance.isNoTimestamps,
       'n_processors': instance.nProcessors,
       'split_on_word': instance.splitOnWord,
