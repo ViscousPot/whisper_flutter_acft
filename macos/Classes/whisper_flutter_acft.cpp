@@ -164,6 +164,17 @@ json transcribe(json jsonBody) noexcept
         }
     }
 
+    // Save original sample count for audio_ctx calculation (before any padding)
+    const int original_samples = (int)pcmf32.size();
+
+    // Pad audio to bypass whisper.cpp's 1-second minimum guards
+    // whisper.cpp requires seek_end > seek + 100, where seek_end = n_samples/160
+    // So we need n_samples/160 > 100, i.e. n_samples > 16000
+    const int min_samples = 16160; // 101 mel frames * 160 hop_length
+    if ((int)pcmf32.size() < min_samples) {
+        pcmf32.resize(min_samples, 0.0f);
+    }
+
     {
         if (params.language == "" && params.language == "auto")
         {
@@ -189,6 +200,10 @@ json transcribe(json jsonBody) noexcept
             wparams.max_len = 1;
             wparams.token_timestamps = true;
         }
+
+        // +8 matches upstream ACFT training (ADD_AUDIO_CTX = 8)
+        // Use original_samples (not padded size) so padding doesn't inflate audio_ctx
+        wparams.audio_ctx = std::min(1500, (int)ceil((double)original_samples / 320.0) + 8);
 
         if (whisper_full(ctx, wparams, pcmf32.data(), pcmf32.size()) != 0)
         {
