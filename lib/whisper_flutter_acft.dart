@@ -191,7 +191,13 @@ class Whisper {
     List<double> buffer = [];
     bool isProcessing = false;
     bool audioEnded = false;
+    int totalSamplesProcessed = 0;
     StreamSubscription? audioSub;
+
+    int effectiveThreshold() =>
+        totalSamplesProcessed < sampleThreshold * 4
+            ? sampleThreshold ~/ 3
+            : sampleThreshold;
 
     Future<void> finalize() async {
       if (buffer.isNotEmpty) {
@@ -210,11 +216,12 @@ class Whisper {
     }
 
     Future<void> maybeProcess() async {
-      if (isProcessing || buffer.length < sampleThreshold) return;
+      if (isProcessing || buffer.length < effectiveThreshold()) return;
       isProcessing = true;
 
       final samples = Float32List.fromList(buffer);
       buffer = [];
+      totalSamplesProcessed += samples.length;
 
       try {
         final response = await streamProcess(sessionId: sessionId, audioData: samples);
@@ -231,7 +238,7 @@ class Whisper {
       isProcessing = false;
 
       // Re-check: more audio may have arrived during processing
-      if (buffer.length >= sampleThreshold) {
+      if (buffer.length >= effectiveThreshold()) {
         maybeProcess();
       } else if (audioEnded) {
         await finalize();
