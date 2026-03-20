@@ -9,6 +9,8 @@
 #include <thread>
 #include <vector>
 #include <cmath>
+#include <map>
+#include <mutex>
 #include <iostream>
 #include <stdio.h>
 #include "json/json.hpp"
@@ -73,6 +75,255 @@ struct whisper_print_user_data
 
     const std::vector<std::vector<float>> *pcmf32s;
 };
+
+// --- Streaming session management ---
+
+struct StreamSession {
+    whisper_context* ctx;
+    std::vector<float> audio_buffer;
+    std::string committed_text;
+    whisper_params params;
+    bool processing = false;
+};
+
+static std::map<int, StreamSession*> g_sessions;
+static int g_next_session_id = 1;
+static std::mutex g_sessions_mutex;
+
+static std::vector<unsigned char> base64_decode(const std::string &input) {
+    static const unsigned char d[] = {
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 62,  0,  0,  0, 63,
+       52, 53, 54, 55, 56, 57, 58, 59, 60, 61,  0,  0,  0,  0,  0,  0,
+        0,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,
+       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,  0,  0,  0,  0,  0,
+        0, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
+    };
+    std::vector<unsigned char> result;
+    int val = 0, valb = -8;
+    for (unsigned char c : input) {
+        if (c == '=' || c >= 128) break;
+        if (c < sizeof(d)) {
+            val = (val << 6) + d[c];
+            valb += 6;
+            if (valb >= 0) {
+                result.push_back((unsigned char)((val >> valb) & 0xFF));
+                valb -= 8;
+            }
+        }
+    }
+    return result;
+}
+
+json streamInit(json jsonBody) noexcept {
+    json jsonResult;
+    jsonResult["@type"] = "streamInit";
+
+    std::string model = jsonBody.value("model", std::string(""));
+    std::string language = jsonBody.value("language", std::string("auto"));
+    int threads = jsonBody.value("threads", 4);
+    std::string initial_prompt = jsonBody.value("initial_prompt", std::string(""));
+
+    if (model.empty()) {
+        jsonResult["@type"] = "error";
+        jsonResult["message"] = "model path required for streamInit";
+        return jsonResult;
+    }
+
+    struct whisper_context *ctx = whisper_init_from_file(model.c_str());
+    if (!ctx) {
+        jsonResult["@type"] = "error";
+        jsonResult["message"] = "failed to initialize whisper model";
+        return jsonResult;
+    }
+
+    StreamSession *session = new StreamSession();
+    session->ctx = ctx;
+    session->params.model = model;
+    session->params.language = language;
+    session->params.n_threads = threads;
+    session->params.initial_prompt = initial_prompt;
+
+    int session_id;
+    {
+        std::lock_guard<std::mutex> lock(g_sessions_mutex);
+        session_id = g_next_session_id++;
+        g_sessions[session_id] = session;
+    }
+
+    jsonResult["session_id"] = session_id;
+    return jsonResult;
+}
+
+json streamProcess(json jsonBody) noexcept {
+    json jsonResult;
+    jsonResult["@type"] = "streamProcess";
+
+    int session_id = jsonBody.value("session_id", 0);
+    std::string audio_data = jsonBody.value("audio_data", std::string(""));
+
+    StreamSession *session = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(g_sessions_mutex);
+        auto it = g_sessions.find(session_id);
+        if (it == g_sessions.end()) {
+            jsonResult["@type"] = "error";
+            jsonResult["message"] = "session not found";
+            return jsonResult;
+        }
+        session = it->second;
+    }
+
+    // Decode base64 audio data and append to buffer
+    if (!audio_data.empty()) {
+        std::vector<unsigned char> decoded = base64_decode(audio_data);
+        const float *float_data = reinterpret_cast<const float*>(decoded.data());
+        size_t num_floats = decoded.size() / sizeof(float);
+        session->audio_buffer.insert(session->audio_buffer.end(), float_data, float_data + num_floats);
+    }
+
+    const int min_samples = 16160;
+    if ((int)session->audio_buffer.size() < min_samples) {
+        jsonResult["text"] = "";
+        jsonResult["committed_text"] = session->committed_text;
+        return jsonResult;
+    }
+
+    // Make a copy for processing (buffer may be padded)
+    std::vector<float> buffer_copy = session->audio_buffer;
+    const int original_samples = (int)buffer_copy.size();
+    if ((int)buffer_copy.size() < min_samples) {
+        buffer_copy.resize(min_samples, 0.0f);
+    }
+
+    // Set up whisper params
+    whisper_full_params wparams = whisper_full_default_params(WHISPER_SAMPLING_GREEDY);
+    wparams.print_realtime = false;
+    wparams.print_progress = false;
+    wparams.print_timestamps = true;
+    wparams.translate = false;
+    wparams.language = session->params.language.c_str();
+    wparams.initial_prompt = session->params.initial_prompt.c_str();
+    wparams.n_threads = session->params.n_threads;
+    wparams.no_context = true;
+    wparams.audio_ctx = std::min(1500, (int)ceil((double)original_samples / 320.0) + 8);
+
+    if (whisper_full(session->ctx, wparams, buffer_copy.data(), buffer_copy.size()) != 0) {
+        jsonResult["@type"] = "error";
+        jsonResult["message"] = "failed to process audio";
+        return jsonResult;
+    }
+
+    // Extract text from all segments
+    std::string text_result = "";
+    const int n_segments = whisper_full_n_segments(session->ctx);
+    for (int i = 0; i < n_segments; ++i) {
+        text_result += whisper_full_get_segment_text(session->ctx, i);
+    }
+
+    // Window management: if buffer > 27s (432000 samples at 16kHz),
+    // commit text and keep last 3s (48000 samples) as overlap
+    const int max_window_samples = 432000;
+    const int overlap_samples = 48000;
+    if ((int)session->audio_buffer.size() > max_window_samples) {
+        session->committed_text += text_result;
+        text_result = "";
+        size_t keep_from = session->audio_buffer.size() - overlap_samples;
+        std::vector<float> overlap(session->audio_buffer.begin() + keep_from, session->audio_buffer.end());
+        session->audio_buffer = overlap;
+    }
+
+    jsonResult["text"] = text_result;
+    jsonResult["committed_text"] = session->committed_text;
+    return jsonResult;
+}
+
+json streamFinalize(json jsonBody) noexcept {
+    json jsonResult;
+    jsonResult["@type"] = "streamFinalize";
+
+    int session_id = jsonBody.value("session_id", 0);
+
+    StreamSession *session = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(g_sessions_mutex);
+        auto it = g_sessions.find(session_id);
+        if (it == g_sessions.end()) {
+            jsonResult["@type"] = "error";
+            jsonResult["message"] = "session not found";
+            return jsonResult;
+        }
+        session = it->second;
+    }
+
+    std::string final_text = session->committed_text;
+
+    // Process any remaining audio in buffer
+    if (!session->audio_buffer.empty()) {
+        std::vector<float> buffer_copy = session->audio_buffer;
+        const int original_samples = (int)buffer_copy.size();
+        const int min_samples = 16160;
+        if ((int)buffer_copy.size() < min_samples) {
+            buffer_copy.resize(min_samples, 0.0f);
+        }
+
+        whisper_full_params wparams = whisper_full_default_params(WHISPER_SAMPLING_GREEDY);
+        wparams.print_realtime = false;
+        wparams.print_progress = false;
+        wparams.print_timestamps = true;
+        wparams.translate = false;
+        wparams.language = session->params.language.c_str();
+        wparams.initial_prompt = session->params.initial_prompt.c_str();
+        wparams.n_threads = session->params.n_threads;
+        wparams.no_context = true;
+        wparams.audio_ctx = std::min(1500, (int)ceil((double)original_samples / 320.0) + 8);
+
+        if (whisper_full(session->ctx, wparams, buffer_copy.data(), buffer_copy.size()) == 0) {
+            const int n_segments = whisper_full_n_segments(session->ctx);
+            for (int i = 0; i < n_segments; ++i) {
+                final_text += whisper_full_get_segment_text(session->ctx, i);
+            }
+        }
+    }
+
+    // Cleanup
+    whisper_free(session->ctx);
+    {
+        std::lock_guard<std::mutex> lock(g_sessions_mutex);
+        g_sessions.erase(session_id);
+    }
+    delete session;
+
+    jsonResult["text"] = final_text;
+    return jsonResult;
+}
+
+json streamCancel(json jsonBody) noexcept {
+    json jsonResult;
+    jsonResult["@type"] = "streamCancel";
+
+    int session_id = jsonBody.value("session_id", 0);
+
+    StreamSession *session = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(g_sessions_mutex);
+        auto it = g_sessions.find(session_id);
+        if (it == g_sessions.end()) {
+            jsonResult["success"] = true;
+            return jsonResult;
+        }
+        session = it->second;
+        g_sessions.erase(it);
+    }
+
+    whisper_free(session->ctx);
+    delete session;
+
+    jsonResult["success"] = true;
+    return jsonResult;
+}
 
 json transcribe(json jsonBody) noexcept
 {
@@ -286,6 +537,58 @@ extern "C"
                 jsonResult["@type"] = "version";
                 jsonResult["message"] = "lib version: v1.0.1";
                 return jsonToChar(jsonResult);
+            }
+            if (jsonBody["@type"] == "streamInit")
+            {
+                try
+                {
+                    return jsonToChar(streamInit(jsonBody));
+                }
+                catch (const std::exception &e)
+                {
+                    jsonResult["@type"] = "error";
+                    jsonResult["message"] = e.what();
+                    return jsonToChar(jsonResult);
+                }
+            }
+            if (jsonBody["@type"] == "streamProcess")
+            {
+                try
+                {
+                    return jsonToChar(streamProcess(jsonBody));
+                }
+                catch (const std::exception &e)
+                {
+                    jsonResult["@type"] = "error";
+                    jsonResult["message"] = e.what();
+                    return jsonToChar(jsonResult);
+                }
+            }
+            if (jsonBody["@type"] == "streamFinalize")
+            {
+                try
+                {
+                    return jsonToChar(streamFinalize(jsonBody));
+                }
+                catch (const std::exception &e)
+                {
+                    jsonResult["@type"] = "error";
+                    jsonResult["message"] = e.what();
+                    return jsonToChar(jsonResult);
+                }
+            }
+            if (jsonBody["@type"] == "streamCancel")
+            {
+                try
+                {
+                    return jsonToChar(streamCancel(jsonBody));
+                }
+                catch (const std::exception &e)
+                {
+                    jsonResult["@type"] = "error";
+                    jsonResult["message"] = e.what();
+                    return jsonToChar(jsonResult);
+                }
             }
 
             jsonResult["@type"] = "error";

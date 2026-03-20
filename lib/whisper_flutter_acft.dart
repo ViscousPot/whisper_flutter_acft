@@ -10,6 +10,7 @@ import "dart:convert";
 import "dart:ffi";
 import "dart:io";
 import "dart:isolate";
+import "dart:typed_data";
 
 import "package:ffi/ffi.dart";
 import "package:flutter/foundation.dart";
@@ -114,6 +115,65 @@ class Whisper {
       throw Exception(result["message"]);
     }
     return WhisperTranscribeResponse.fromJson(result);
+  }
+
+  /// Initialize a streaming transcription session
+  Future<int> streamInit({
+    int threads = 6,
+    String language = "auto",
+    String initialPrompt = "",
+  }) async {
+    final String modelDir = await _getModelDir();
+    final Map<String, dynamic> result = await _request(
+      whisperRequest: StreamInitRequest(
+        model: model.getPath(modelDir),
+        language: language,
+        threads: threads,
+        initialPrompt: initialPrompt,
+      ),
+    );
+    if (result["@type"] == "error") {
+      throw Exception(result["message"]);
+    }
+    return StreamInitResponse.fromJson(result).sessionId;
+  }
+
+  /// Process an audio chunk in a streaming session
+  Future<StreamProcessResponse> streamProcess({
+    required int sessionId,
+    required Float32List audioData,
+  }) async {
+    final Map<String, dynamic> result = await _request(
+      whisperRequest: StreamProcessRequest(
+        sessionId: sessionId,
+        audioData: audioData,
+      ),
+    );
+    if (result["@type"] == "error") {
+      throw Exception(result["message"]);
+    }
+    return StreamProcessResponse.fromJson(result);
+  }
+
+  /// Finalize a streaming session and get the complete transcription
+  Future<String> streamFinalize({required int sessionId}) async {
+    final Map<String, dynamic> result = await _request(
+      whisperRequest: StreamFinalizeRequest(sessionId: sessionId),
+    );
+    if (result["@type"] == "error") {
+      throw Exception(result["message"]);
+    }
+    return StreamFinalizeResponse.fromJson(result).text;
+  }
+
+  /// Cancel a streaming session without getting results
+  Future<void> streamCancel({required int sessionId}) async {
+    final Map<String, dynamic> result = await _request(
+      whisperRequest: StreamCancelRequest(sessionId: sessionId),
+    );
+    if (result["@type"] == "error") {
+      throw Exception(result["message"]);
+    }
   }
 
   /// Get whisper version
