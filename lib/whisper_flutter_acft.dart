@@ -191,6 +191,7 @@ class Whisper {
     List<double> buffer = [];
     bool isProcessing = false;
     bool audioEnded = false;
+    bool finalized = false;
     int totalSamplesProcessed = 0;
     StreamSubscription? audioSub;
 
@@ -200,18 +201,23 @@ class Whisper {
             : sampleThreshold;
 
     Future<void> finalize() async {
-      if (buffer.isNotEmpty) {
-        final samples = Float32List.fromList(buffer);
-        buffer = [];
-        await streamProcess(sessionId: sessionId, audioData: samples);
+      finalized = true;
+      try {
+        if (buffer.isNotEmpty) {
+          final samples = Float32List.fromList(buffer);
+          buffer = [];
+          await streamProcess(sessionId: sessionId, audioData: samples);
+        }
+        final finalText = await streamFinalize(sessionId: sessionId);
+        controller.add(StreamTranscriptionUpdate(
+          text: finalText,
+          committedText: finalText,
+          pendingText: "",
+          isFinal: true,
+        ));
+      } catch (e) {
+        controller.addError(e);
       }
-      final finalText = await streamFinalize(sessionId: sessionId);
-      controller.add(StreamTranscriptionUpdate(
-        text: finalText,
-        committedText: finalText,
-        pendingText: "",
-        isFinal: true,
-      ));
       controller.close();
     }
 
@@ -265,7 +271,9 @@ class Whisper {
       },
       onCancel: () async {
         await audioSub?.cancel();
-        await streamCancel(sessionId: sessionId);
+        if (!finalized) {
+          await streamCancel(sessionId: sessionId);
+        }
       },
     );
 
