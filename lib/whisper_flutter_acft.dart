@@ -6,6 +6,7 @@
  * 所有代码均受中国《计算机软件保护条例》保护，侵权必究.
  */
 
+import "dart:async";
 import "dart:convert";
 import "dart:ffi";
 import "dart:io";
@@ -174,6 +175,94 @@ class Whisper {
     if (result["@type"] == "error") {
       throw Exception(result["message"]);
     }
+  }
+
+  /// Stream-in / stream-out transcription.
+  /// Accepts a stream of audio samples and yields transcription updates.
+  Stream<StreamTranscriptionUpdate> streamTranscribe({
+    required Stream<List<double>> audioStream,
+    String language = "auto",
+    String initialPrompt = "",
+    int threads = 6,
+    int sampleThreshold = 48000, // ~3 seconds at 16kHz
+  }) {
+    late final StreamController<StreamTranscriptionUpdate> controller;
+    late final int sessionId;
+    List<double> buffer = [];
+    bool isProcessing = false;
+    bool audioEnded = false;
+    StreamSubscription? audioSub;
+
+    Future<void> finalize() async {
+      if (buffer.isNotEmpty) {
+        final samples = Float32List.fromList(buffer);
+        buffer = [];
+        await streamProcess(sessionId: sessionId, audioData: samples);
+      }
+      final finalText = await streamFinalize(sessionId: sessionId);
+      controller.add(StreamTranscriptionUpdate(
+        text: finalText,
+        committedText: finalText,
+        pendingText: "",
+        isFinal: true,
+      ));
+      controller.close();
+    }
+
+    Future<void> maybeProcess() async {
+      if (isProcessing || buffer.length < sampleThreshold) return;
+      isProcessing = true;
+
+      final samples = Float32List.fromList(buffer);
+      buffer = [];
+
+      try {
+        final response = await streamProcess(sessionId: sessionId, audioData: samples);
+        controller.add(StreamTranscriptionUpdate(
+          text: response.committedText + response.text,
+          committedText: response.committedText,
+          pendingText: response.text,
+          isFinal: false,
+        ));
+      } catch (e) {
+        controller.addError(e);
+      }
+
+      isProcessing = false;
+
+      // Re-check: more audio may have arrived during processing
+      if (buffer.length >= sampleThreshold) {
+        maybeProcess();
+      } else if (audioEnded) {
+        await finalize();
+      }
+    }
+
+    controller = StreamController<StreamTranscriptionUpdate>(
+      onListen: () async {
+        sessionId = await streamInit(
+          language: language,
+          threads: threads,
+          initialPrompt: initialPrompt,
+        );
+        audioSub = audioStream.listen(
+          (chunk) {
+            buffer.addAll(chunk);
+            maybeProcess();
+          },
+          onDone: () async {
+            audioEnded = true;
+            if (!isProcessing) await finalize();
+          },
+        );
+      },
+      onCancel: () async {
+        await audioSub?.cancel();
+        await streamCancel(sessionId: sessionId);
+      },
+    );
+
+    return controller.stream;
   }
 
   /// Get whisper version

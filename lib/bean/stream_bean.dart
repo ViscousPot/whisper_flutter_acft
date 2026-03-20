@@ -129,3 +129,17 @@ class StreamFinalizeResponse {
     return StreamFinalizeResponse(text: json["text"] as String? ?? "");
   }
 }
+
+class StreamTranscriptionUpdate {
+  final String text;           // full transcription so far (committed + pending)
+  final String committedText;  // finalized text
+  final String pendingText;    // tentative text from current window
+  final bool isFinal;          // true on the last update after finalization
+
+  const StreamTranscriptionUpdate({
+    required this.text,
+    required this.committedText,
+    required this.pendingText,
+    required this.isFinal,
+  });
+}
