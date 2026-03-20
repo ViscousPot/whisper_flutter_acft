@@ -5,12 +5,14 @@
 #include "whisper.cpp/examples/dr_wav.h"
 
 #include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <thread>
 #include <vector>
 #include <cmath>
 #include <map>
 #include <mutex>
+#include <memory>
 #include <iostream>
 #include <stdio.h>
 #include "json/json.hpp"
@@ -20,7 +22,7 @@ using json = nlohmann::json;
 char *jsonToChar(json jsonData) noexcept
 {
     std::string result = jsonData.dump();
-    char *ch = new char[result.size() + 1];
+    char *ch = (char*)malloc(result.size() + 1);
     strcpy(ch, result.c_str());
     return ch;
 }
@@ -83,10 +85,11 @@ struct StreamSession {
     std::vector<float> audio_buffer;
     std::string committed_text;
     whisper_params params;
-    bool processing = false;
+    std::mutex mtx;
+    bool cancelled = false;
 };
 
-static std::map<int, StreamSession*> g_sessions;
+static std::map<int, std::shared_ptr<StreamSession>> g_sessions;
 static int g_next_session_id = 1;
 static std::mutex g_sessions_mutex;
 
@@ -139,7 +142,7 @@ json streamInit(json jsonBody) noexcept {
         return jsonResult;
     }
 
-    StreamSession *session = new StreamSession();
+    auto session = std::make_shared<StreamSession>();
     session->ctx = ctx;
     session->params.model = model;
     session->params.language = language;
@@ -164,7 +167,7 @@ json streamProcess(json jsonBody) noexcept {
     int session_id = jsonBody.value("session_id", 0);
     std::string audio_data = jsonBody.value("audio_data", std::string(""));
 
-    StreamSession *session = nullptr;
+    std::shared_ptr<StreamSession> session;
     {
         std::lock_guard<std::mutex> lock(g_sessions_mutex);
         auto it = g_sessions.find(session_id);
@@ -174,6 +177,14 @@ json streamProcess(json jsonBody) noexcept {
             return jsonResult;
         }
         session = it->second;
+    }
+
+    std::lock_guard<std::mutex> sess_lock(session->mtx);
+
+    if (session->cancelled) {
+        jsonResult["@type"] = "error";
+        jsonResult["message"] = "session cancelled";
+        return jsonResult;
     }
 
     // Decode base64 audio data and append to buffer
@@ -246,7 +257,7 @@ json streamFinalize(json jsonBody) noexcept {
 
     int session_id = jsonBody.value("session_id", 0);
 
-    StreamSession *session = nullptr;
+    std::shared_ptr<StreamSession> session;
     {
         std::lock_guard<std::mutex> lock(g_sessions_mutex);
         auto it = g_sessions.find(session_id);
@@ -256,6 +267,15 @@ json streamFinalize(json jsonBody) noexcept {
             return jsonResult;
         }
         session = it->second;
+        g_sessions.erase(it);
+    }
+
+    std::lock_guard<std::mutex> sess_lock(session->mtx);
+
+    if (session->cancelled) {
+        jsonResult["@type"] = "error";
+        jsonResult["message"] = "session already cancelled";
+        return jsonResult;
     }
 
     std::string final_text = session->committed_text;
@@ -288,13 +308,9 @@ json streamFinalize(json jsonBody) noexcept {
         }
     }
 
-    // Cleanup
     whisper_free(session->ctx);
-    {
-        std::lock_guard<std::mutex> lock(g_sessions_mutex);
-        g_sessions.erase(session_id);
-    }
-    delete session;
+    session->ctx = nullptr;
+    session->cancelled = true;
 
     jsonResult["text"] = final_text;
     return jsonResult;
@@ -306,7 +322,7 @@ json streamCancel(json jsonBody) noexcept {
 
     int session_id = jsonBody.value("session_id", 0);
 
-    StreamSession *session = nullptr;
+    std::shared_ptr<StreamSession> session;
     {
         std::lock_guard<std::mutex> lock(g_sessions_mutex);
         auto it = g_sessions.find(session_id);
@@ -318,8 +334,13 @@ json streamCancel(json jsonBody) noexcept {
         g_sessions.erase(it);
     }
 
-    whisper_free(session->ctx);
-    delete session;
+    std::lock_guard<std::mutex> sess_lock(session->mtx);
+
+    session->cancelled = true;
+    if (session->ctx) {
+        whisper_free(session->ctx);
+        session->ctx = nullptr;
+    }
 
     jsonResult["success"] = true;
     return jsonResult;
